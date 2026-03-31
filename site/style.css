@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:       #0e0e1a;
+  --surface:  #1a1a2e;
+  --border:   #2e2e4a;
+  --lavender: #c9b8ff;
+  --pink:     #ffb8d9;
+  --mint:     #b8ffd9;
+  --sky:      #b8e8ff;
+  --text:     #e8e4f0;
+  --muted:    #8880a8;
+  --glow:     rgba(201, 184, 255, 0.15);
+}
+
+html, body {
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(120, 80, 200, 0.18), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255, 100, 160, 0.08), transparent);
+  font-family: 'Nunito', system-ui, sans-serif;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 2.5rem;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--lavender) 0%, var(--pink) 60%, var(--mint) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  filter: drop-shadow(0 0 18px rgba(201, 184, 255, 0.4));
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.nav li {
+  list-style: none;
+}
+
+.nav a {
+  display: block;
+  width: min(280px, 90vw);
+  padding: 0.85rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  color: var(--lavender);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.nav a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--glow), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.nav a:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 28px rgba(201, 184, 255, 0.22), 0 2px 8px rgba(0, 0, 0, 0.5);
+  border-color: var(--lavender);
+  color: #fff;
+}
+
+.nav a:hover::before { opacity: 1; }
+.nav a:active        { transform: translateY(0) scale(0.98); }
+
+/* Per-item accent colors */
+.nav li:nth-child(1) a { color: var(--lavender); border-color: color-mix(in srgb, var(--lavender) 30%, var(--border)); }
+.nav li:nth-child(2) a { color: var(--pink);     border-color: color-mix(in srgb, var(--pink)     30%, var(--border)); }
+.nav li:nth-child(3) a { color: var(--mint);     border-color: color-mix(in srgb, var(--mint)     30%, var(--border)); }
+.nav li:nth-child(4) a { color: var(--sky);      border-color: color-mix(in srgb, var(--sky)      30%, var(--border)); }
+.nav li:nth-child(5) a { color: var(--lavender); border-color: color-mix(in srgb, var(--lavender) 30%, var(--border)); }
+
+.nav li:nth-child(2) a:hover { box-shadow: 0 6px 28px rgba(255, 184, 217, 0.22), 0 2px 8px rgba(0,0,0,0.5); border-color: var(--pink); }
+.nav li:nth-child(3) a:hover { box-shadow: 0 6px 28px rgba(184, 255, 217, 0.22), 0 2px 8px rgba(0,0,0,0.5); border-color: var(--mint); }
+.nav li:nth-child(4) a:hover { box-shadow: 0 6px 28px rgba(184, 232, 255, 0.22), 0 2px 8px rgba(0,0,0,0.5); border-color: var(--sky); }
+
+/* tiny sparkle footer */
+body::after {
+  content: '✦  lapinel family  ✦';
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  position: fixed;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}

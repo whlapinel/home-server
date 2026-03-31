@@ -1,0 +1,59 @@
+lapinel-home.arpa {
+    tls internal
+    root /var/www
+
+    file_server
+}
+
+*.lapinel-home.arpa {
+    tls internal
+
+    @wereword host wereword.lapinel-home.arpa
+    handle @wereword {
+        reverse_proxy 192.168.86.234:2109
+    }
+
+    @insider host insider.lapinel-home.arpa
+    handle @insider {
+        reverse_proxy 192.168.86.234:5532
+    }
+
+    @ha host ha.lapinel-home.arpa
+    handle @ha {
+        reverse_proxy 192.168.86.234:8123
+    }
+
+    @pages host pages.lapinel-home.arpa 
+    handle @pages {
+        reverse_proxy 192.168.86.234:1066
+    }
+
+    @chores host chores.lapinel-home.arpa 
+    handle @chores {
+        reverse_proxy 192.168.86.234:2021
+    }
+
+    @tasks host tasks.lapinel-home.arpa 
+    handle @tasks {
+        reverse_proxy 192.168.86.234:3456
+    }
+
+    @budget host budget.lapinel-home.arpa 
+    handle @budget {
+        reverse_proxy 192.168.86.234:5006
+    }
+
+    @wg host wg.lapinel-home.arpa 
+    handle @wg {
+        reverse_proxy 192.168.86.234:51821
+    }
+
+    @adguard host adguard.lapinel-home.arpa 
+    handle @adguard {
+        reverse_proxy 192.168.86.234:3000
+    }
+
+    handle {
+        respond "unknown internal host" 404
+    }
+}

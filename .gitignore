@@ -1,0 +1,7 @@
+*.crt
+.*
+!.gitignore
+*.db
+homeassistant/*
+budget.json
+hash.sh
