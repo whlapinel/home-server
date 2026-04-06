@@ -1,0 +1,39 @@
+lapinel-home.arpa {
+    tls internal
+    root * /var/www
+    file_server
+}
+
+*.lapinel-home.arpa {
+    tls internal
+
+    @pages host pages.lapinel-home.arpa 
+    handle @pages {
+        reverse_proxy grav:80
+    }
+
+    @chores host chores.lapinel-home.arpa 
+    handle @chores {
+        reverse_proxy donetick:2021
+    }
+
+    @tasks host tasks.lapinel-home.arpa 
+    handle @tasks {
+        reverse_proxy vikunja:3456
+    }
+
+    @budget host budget.lapinel-home.arpa 
+    handle @budget {
+        reverse_proxy actual_server:5006
+    }
+
+    @wg host wg.lapinel-home.arpa 
+    handle @wg {
+        reverse_proxy wg-easy:51821
+    }
+
+    handle {
+        respond "unknown internal host" 404
+    }
+}
+

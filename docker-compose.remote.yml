@@ -1,0 +1,34 @@
+services:
+  # Use remote-specific Caddyfile with internal TLS and service-name upstreams
+  caddy:
+    volumes:
+      - ./Caddyfile.remote:/etc/caddy/Caddyfile
+    env_file:
+      - /etc/home-server/.env
+
+  # Remove host port publishes; reachable via Caddy inside VPN
+  grav:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+  vikunja:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+  donetick:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+  actual_server:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+
+  # Explicitly keep wg-easy; UI is only reachable via VPN (no SG rule for 51821/tcp)
+  wg-easy:
+    # no change; inherits base config
+    # ensure published ports remain for WireGuard UDP 51820
+    # UI is published on 51821 but blocked by SG; accessible from VPN only
+    env_file:
+      - /etc/home-server/.env
+    
