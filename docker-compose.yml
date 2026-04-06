@@ -3,6 +3,8 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     container_name: homeassistant
     restart: unless-stopped
+    profiles:
+      - local
     network_mode: host
     volumes:
       - ./homeassistant/config:/config
@@ -34,6 +36,8 @@ services:
     image: adguard/adguardhome
     container_name: adguardhome
     restart: unless-stopped
+    profiles:
+      - local
     volumes:
       - ~/adguard/work:/opt/adguardhome/work
       - ~/adguard/conf:/opt/adguardhome/conf
@@ -80,7 +84,7 @@ services:
       - "2021:2021"
     volumes:
       - ./donetick-data:/donetick-data  # Maps./data on your host to /donetick-data in the container
-      - ./doneticket-config:/config       # Maps./config on your host to /config in the container
+      - ./donetick-config:/config       # Maps ./donetick-config on host to /config in container
     env_file:
       - .env
   actual_server:

@@ -5,3 +5,5 @@
 homeassistant/*
 budget.json
 hash.sh
+
+**/*/node_modules/
