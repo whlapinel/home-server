@@ -1,0 +1,98 @@
+{
+  "/HomeServerStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--al2023-ami-kernel-6.1-x86_64:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+    }
+  ],
+  "/HomeServerStack/HomeServerEip": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerEip"
+    }
+  ],
+  "/HomeServerStack/HomeServerEipAssoc": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerEipAssoc"
+    }
+  ],
+  "/HomeServerStack/InstanceId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "InstanceId"
+    }
+  ],
+  "/HomeServerStack/PublicIp": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "PublicIp"
+    }
+  ],
+  "/HomeServerStack/SgId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SgId"
+    }
+  ],
+  "/HomeServerStack/BackupBucketNameOutput": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BackupBucketNameOutput"
+    }
+  ],
+  "/HomeServerStack/ElasticIp": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ElasticIp"
+    }
+  ],
+  "/HomeServerStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/HomeServerStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/HomeServerStack/HomeServerSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerSg1286B266"
+    }
+  ],
+  "/HomeServerStack/HomeServerRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerRole6D1AD56A"
+    }
+  ],
+  "/HomeServerStack/HomeServerInstance/InstanceProfile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerInstanceInstanceProfileE57F17A8"
+    }
+  ],
+  "/HomeServerStack/HomeServerInstance/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerInstanceCC7B968F"
+    }
+  ],
+  "/HomeServerStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/HomeServerStack/HomeServerRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HomeServerRoleDefaultPolicy387E7A82"
+    }
+  ]
+}

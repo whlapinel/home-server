@@ -1,0 +1,9 @@
+{
+  "app": "npx ts-node --prefer-ts-exts bin/home-server.ts",
+  "context": {
+    "account": "955852928464",
+    "region": "us-east-2",
+    "backupBucketName": "lapinel-home-server-backup",
+    "repoUrl": "https://github.com/whlapinel/home-server"
+  }
+}
