@@ -24,11 +24,13 @@ services:
     env_file:
       - /etc/home-server/.env
 
+  adguardhome:
+    env_file: []
+
   # Explicitly keep wg-easy; UI is only reachable via VPN (no SG rule for 51821/tcp)
   wg-easy:
-    # no change; inherits base config
-    # ensure published ports remain for WireGuard UDP 51820
-    # UI is published on 51821 but blocked by SG; accessible from VPN only
+    volumes:
+      - /root/.wg-easy:/etc/wireguard
     env_file:
       - /etc/home-server/.env
     

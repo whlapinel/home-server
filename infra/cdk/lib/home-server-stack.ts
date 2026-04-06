@@ -64,8 +64,12 @@ export class HomeServerStack extends cdk.Stack {
       'echo "[bootstrap] Starting at $(date -Is)"',
       'dnf update -y',
       'dnf makecache -y',
-      // Install Docker from AL2023 repos (includes docker compose v2) and tools
-      'dnf install -y docker git awscli curl bzip2 ca-certificates',
+      // Install Docker from AL2023 repos and tools
+      'dnf install -y docker git awscli bzip2 ca-certificates',
+      // Install Docker Compose v2 plugin (not included in AL2023 docker package)
+      'mkdir -p /usr/local/lib/docker/cli-plugins',
+      'curl -SL https://github.com/docker/compose/releases/download/v2.27.1/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose',
+      'chmod +x /usr/local/lib/docker/cli-plugins/docker-compose',
       // Install restic via official release (pin version)
       'echo "[bootstrap] Installing restic 0.18.1"',
       'curl -fsSL -o /usr/local/bin/restic.bz2 https://github.com/restic/restic/releases/download/v0.18.1/restic_0.18.1_linux_amd64.bz2',
