@@ -7,3 +7,5 @@ budget.json
 hash.sh
 
 **/*/node_modules/
+
+infra/cdk/cdk.out/
