@@ -1,6 +1,8 @@
 services:
-  # Use remote-specific Caddyfile with internal TLS and service-name upstreams
+  # Use remote-specific Caddyfile with Let's Encrypt DNS challenge via Route53
   caddy:
+    build: ./caddy
+    image: home-server-caddy:latest
     volumes:
       - ./Caddyfile.remote:/etc/caddy/Caddyfile
     env_file:
@@ -23,9 +25,6 @@ services:
     ports: []
     env_file:
       - /etc/home-server/.env
-
-  adguardhome:
-    env_file: []
 
   # Explicitly keep wg-easy; UI is only reachable via VPN (no SG rule for 51821/tcp)
   wg-easy:

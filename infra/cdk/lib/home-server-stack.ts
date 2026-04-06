@@ -48,6 +48,23 @@ export class HomeServerStack extends cdk.Stack {
       ],
     }));
 
+    // Route53 permissions for Caddy Let's Encrypt DNS challenge
+    role.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        'route53:GetChange',
+        'route53:ChangeResourceRecordSets',
+        'route53:ListResourceRecordSets',
+      ],
+      resources: [
+        'arn:aws:route53:::hostedzone/Z02298411YL43N517DY88',
+        'arn:aws:route53:::change/*',
+      ],
+    }));
+    role.addToPolicy(new iam.PolicyStatement({
+      actions: ['route53:ListHostedZonesByName'],
+      resources: ['*'],
+    }));
+
     // Amazon Linux 2023 via SSM public parameter (x86_64)
     const machineImage = ec2.MachineImage.fromSsmParameter(
       '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64',
@@ -89,8 +106,9 @@ export class HomeServerStack extends cdk.Stack {
       '[ -d /opt/home-server/.git ] || git clone "$REPO_URL" /opt/home-server',
       'cd /opt/home-server && git rev-parse --is-inside-work-tree',
       'cd /opt/home-server && git pull --ff-only',
+      'ln -sf /etc/home-server/.env /opt/home-server/.env',
       'echo "[bootstrap] Bringing up Docker Compose stack (remote override)"',
-      'cd /opt/home-server && docker compose -f docker-compose.yml -f docker-compose.remote.yml --env-file /etc/home-server/.env up -d',
+      'cd /opt/home-server && docker compose -f docker-compose.yml -f docker-compose.remote.yml --env-file /etc/home-server/.env up -d --build',
       'echo "[bootstrap] Completed at $(date -Is)"'
     );
 

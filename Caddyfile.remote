@@ -1,39 +1,42 @@
-lapinel-home.arpa {
-    tls internal
+lapinel-fam.club {
+    tls {
+        dns route53
+    }
     root * /var/www
     file_server
 }
 
-*.lapinel-home.arpa {
-    tls internal
+*.lapinel-fam.club {
+    tls {
+        dns route53
+    }
 
-    @pages host pages.lapinel-home.arpa 
+    @pages host pages.lapinel-fam.club
     handle @pages {
         reverse_proxy grav:80
     }
 
-    @chores host chores.lapinel-home.arpa 
+    @chores host chores.lapinel-fam.club
     handle @chores {
         reverse_proxy donetick:2021
     }
 
-    @tasks host tasks.lapinel-home.arpa 
+    @tasks host tasks.lapinel-fam.club
     handle @tasks {
         reverse_proxy vikunja:3456
     }
 
-    @budget host budget.lapinel-home.arpa 
+    @budget host budget.lapinel-fam.club
     handle @budget {
         reverse_proxy actual_server:5006
     }
 
-    @wg host wg.lapinel-home.arpa 
+    @wg host wg.lapinel-fam.club
     handle @wg {
         reverse_proxy wg-easy:51821
     }
 
     handle {
-        respond "unknown internal host" 404
+        respond "unknown host" 404
     }
 }
-
