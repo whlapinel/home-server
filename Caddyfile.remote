@@ -33,7 +33,7 @@ lapinel-fam.club {
 
     @wg host wg.lapinel-fam.club
     handle @wg {
-        reverse_proxy wg-easy:51821
+        reverse_proxy host.docker.internal:51821
     }
 
     handle {

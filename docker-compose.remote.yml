@@ -3,6 +3,8 @@ services:
   caddy:
     build: ./caddy
     image: home-server-caddy:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./Caddyfile.remote:/etc/caddy/Caddyfile
     env_file:
@@ -26,8 +28,11 @@ services:
     env_file:
       - /etc/home-server/.env
 
-  # Explicitly keep wg-easy; UI is only reachable via VPN (no SG rule for 51821/tcp)
+  # Run wg-easy in host network mode so wg0 (10.8.0.1) lives on the host,
+  # allowing Docker's iptables rules to forward VPN traffic to other containers.
   wg-easy:
+    network_mode: host
+    ports: []
     volumes:
       - /root/.wg-easy:/etc/wireguard
     env_file:
