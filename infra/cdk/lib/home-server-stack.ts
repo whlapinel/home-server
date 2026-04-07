@@ -94,6 +94,8 @@ export class HomeServerStack extends cdk.Stack {
       'chmod +x /usr/local/bin/restic',
       'restic version',
       'if id ec2-user >/dev/null 2>&1; then usermod -aG docker ec2-user; fi',
+      'sysctl -w net.ipv4.ip_forward=1',
+      'sysctl -w net.ipv4.conf.all.src_valid_mark=1',
       'systemctl enable --now docker',
       'echo "[bootstrap] Waiting for Docker daemon..."',
       'until docker info >/dev/null 2>&1; do sleep 2; done',
