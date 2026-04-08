@@ -16,7 +16,7 @@ services:
     ports:
       - "1066:80"
     volumes:
-      - grav_site:/var/www/html
+      - ${DATA_PATH:-.}/grav-site:/var/www/html
     restart: unless-stopped
   caddy:
     image: caddy:2
@@ -68,8 +68,8 @@ services:
     ports:
       - 3456:3456
     volumes:
-      - ./vikunja-files:/app/vikunja/files
-      - ./vikunja-db:/db
+      - ${DATA_PATH:-.}/vikunja-files:/app/vikunja/files
+      - ${DATA_PATH:-.}/vikunja-db:/db
     restart: unless-stopped
     env_file:
       - .env
@@ -80,8 +80,8 @@ services:
     ports:
       - "2021:2021"
     volumes:
-      - ./donetick-data:/donetick-data  # Maps./data on your host to /donetick-data in the container
-      - ./donetick-config:/config       # Maps ./donetick-config on host to /config in container
+      - ${DATA_PATH:-.}/donetick-data:/donetick-data
+      - ${DATA_PATH:-.}/donetick-config:/config
     env_file:
       - .env
   actual_server:
@@ -93,7 +93,7 @@ services:
     volumes:
       # Change './actual-data' below to the path to the folder you want Actual to store its data in on your server.
       # '/data' is the path Actual will look for its files in by default, so leave that as-is.
-      - ./actual-data:/data
+      - ${DATA_PATH:-.}/actual-data:/data
     healthcheck:
       # Enable health check for the instance
       test: ['CMD-SHELL', 'node src/scripts/health-check.js']
@@ -106,4 +106,3 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  grav_site:

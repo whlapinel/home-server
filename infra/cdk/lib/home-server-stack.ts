@@ -99,7 +99,15 @@ export class HomeServerStack extends cdk.Stack {
       'systemctl enable --now docker',
       'echo "[bootstrap] Waiting for Docker daemon..."',
       'until docker info >/dev/null 2>&1; do sleep 2; done',
-      'mkdir -p /etc/home-server /opt/home-server',
+      'mkdir -p /etc/home-server /opt/home-server /opt/home-server-data',
+      'echo "[bootstrap] Waiting for data volume to appear..."',
+      'for i in $(seq 1 30); do DATA_DEVICE=$(lsblk -dpno NAME | grep nvme | grep -v nvme0n1 | head -1); [ -n "$DATA_DEVICE" ] && break; sleep 2; done',
+      '[ -n "$DATA_DEVICE" ] || { echo "[bootstrap][error] Data device not found after 60s"; exit 1; }',
+      'echo "[bootstrap] Data device: $DATA_DEVICE"',
+      'blkid "$DATA_DEVICE" >/dev/null 2>&1 || mkfs.ext4 -L home-server-data "$DATA_DEVICE"',
+      'grep -q "LABEL=home-server-data" /etc/fstab || echo "LABEL=home-server-data /opt/home-server-data ext4 defaults,nofail 0 2" >> /etc/fstab',
+      'mount -a',
+      'echo "[bootstrap] Data volume mounted at /opt/home-server-data"',
       'echo "[bootstrap] Fetching /home-server/.env from SSM Parameter Store"',
       `aws ssm get-parameter --region ${cdk.Stack.of(this).region} --name "/home-server/.env" --with-decryption --query 'Parameter.Value' --output text > /etc/home-server/.env`,
       'test -s /etc/home-server/.env || { echo "[bootstrap][error] /etc/home-server/.env is missing or empty"; exit 1; }',
@@ -114,6 +122,11 @@ export class HomeServerStack extends cdk.Stack {
       'chmod +x /opt/home-server/impostor/impostor',
       'echo "[bootstrap] Bringing up Docker Compose stack (remote override)"',
       'cd /opt/home-server && docker compose -f docker-compose.yml -f docker-compose.remote.yml --env-file /etc/home-server/.env up -d --build',
+      'echo "[bootstrap] Initializing restic repository if needed"',
+      'set -a && source /etc/home-server/.env && set +a',
+      'restic snapshots >/dev/null 2>&1 || restic init',
+      'echo "[bootstrap] Configuring daily backup cron job"',
+      'echo "0 2 * * * root /opt/home-server/backup.sh >> /var/log/home-server-backup.log 2>&1" > /etc/cron.d/home-server-backup',
       'echo "[bootstrap] Completed at $(date -Is)"'
     );
 
@@ -125,6 +138,26 @@ export class HomeServerStack extends cdk.Stack {
       securityGroup: sg,
       role,
       userData,
+      blockDevices: [
+        {
+          deviceName: '/dev/xvda',
+          volume: ec2.BlockDeviceVolume.ebs(30),
+        },
+      ],
+    });
+
+    // Separate data volume — persists across instance replacements (cdk deploy won't wipe app data)
+    const dataVolume = new ec2.CfnVolume(this, 'DataVolume', {
+      availabilityZone: instance.instanceAvailabilityZone,
+      size: 20,
+      volumeType: 'gp3',
+    });
+    dataVolume.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+
+    new ec2.CfnVolumeAttachment(this, 'DataVolumeAttachment', {
+      instanceId: instance.instanceId,
+      volumeId: dataVolume.ref,
+      device: '/dev/xvdf',
     });
 
     // Allocate and associate an Elastic IP for a stable WireGuard endpoint
@@ -140,5 +173,6 @@ export class HomeServerStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'SgId', { value: sg.securityGroupId });
     new cdk.CfnOutput(this, 'BackupBucketNameOutput', { value: backupBucketName || '<unset>' });
     new cdk.CfnOutput(this, 'ElasticIp', { value: eip.attrPublicIp });
+    new cdk.CfnOutput(this, 'DataVolumeId', { value: dataVolume.ref });
   }
 }
