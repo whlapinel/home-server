@@ -28,6 +28,10 @@ services:
     env_file:
       - /etc/home-server/.env
 
+  impostor:
+    build: ./impostor
+    restart: unless-stopped
+
   # Run wg-easy in host network mode so wg0 (10.8.0.1) lives on the host,
   # allowing Docker's iptables rules to forward VPN traffic to other containers.
   wg-easy:

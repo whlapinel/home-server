@@ -13,9 +13,9 @@ lapinel-home.arpa {
         reverse_proxy 192.168.86.234:2109
     }
 
-    @insider host insider.lapinel-home.arpa
-    handle @insider {
-        reverse_proxy 192.168.86.234:5532
+    @impostor host impostor.lapinel-home.arpa
+    handle @impostor {
+        reverse_proxy 192.168.86.234:1789
     }
 
     @ha host ha.lapinel-home.arpa

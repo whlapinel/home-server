@@ -11,6 +11,11 @@ lapinel-fam.club {
         dns route53
     }
 
+    @impostor host impostor.lapinel-fam.club
+    handle @impostor {
+        reverse_proxy impostor:1789
+    }
+
     @pages host pages.lapinel-fam.club
     handle @pages {
         reverse_proxy grav:80

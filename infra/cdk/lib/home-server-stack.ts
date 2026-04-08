@@ -109,6 +109,9 @@ export class HomeServerStack extends cdk.Stack {
       'cd /opt/home-server && git rev-parse --is-inside-work-tree',
       'cd /opt/home-server && git pull --ff-only',
       'ln -sf /etc/home-server/.env /opt/home-server/.env',
+      'echo "[bootstrap] Downloading impostor binary from S3"',
+      `aws s3 cp s3://${backupBucketName}/binaries/impostor /opt/home-server/impostor/impostor`,
+      'chmod +x /opt/home-server/impostor/impostor',
       'echo "[bootstrap] Bringing up Docker Compose stack (remote override)"',
       'cd /opt/home-server && docker compose -f docker-compose.yml -f docker-compose.remote.yml --env-file /etc/home-server/.env up -d --build',
       'echo "[bootstrap] Completed at $(date -Is)"'
