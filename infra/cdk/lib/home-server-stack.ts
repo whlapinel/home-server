@@ -126,6 +126,8 @@ export class HomeServerStack extends cdk.Stack {
       'set -a && source /etc/home-server/.env && set +a',
       'restic snapshots >/dev/null 2>&1 || restic init',
       'echo "[bootstrap] Configuring daily backup cron job"',
+      'dnf install -y cronie',
+      'systemctl enable --now crond',
       'echo "0 2 * * * root /opt/home-server/backup.sh >> /var/log/home-server-backup.log 2>&1" > /etc/cron.d/home-server-backup',
       'echo "[bootstrap] Completed at $(date -Is)"'
     );

@@ -33,6 +33,8 @@ set -a; source /etc/home-server/.env; set +a
 restic snapshots >/dev/null 2>&1 || restic init
 
 echo "Ensuring daily backup cron job is configured..."
+command -v crond >/dev/null 2>&1 || dnf install -y cronie
+systemctl enable --now crond
 echo "0 2 * * * root /opt/home-server/backup.sh >> /var/log/home-server-backup.log 2>&1" > /etc/cron.d/home-server-backup
 
 echo "Deploy complete."
