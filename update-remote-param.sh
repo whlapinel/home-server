@@ -2,7 +2,7 @@
 
 cd /home/whlapinel/home_server/home-server/
 
-source .env.remote
+source .env.dev
 
 aws ssm put-parameter \
 --name "/home-server/.env" \
