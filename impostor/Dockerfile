@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM debian:bookworm-slim
 COPY impostor /impostor
 RUN chmod +x /impostor
 EXPOSE 1789
