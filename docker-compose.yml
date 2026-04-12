@@ -112,10 +112,11 @@ services:
       SMTP_PORT: $VW_SMTP_PORT         
       SMTP_SECURITY: $VW_SMTP_SECURITY                                                                                                                                                                              
       SMTP_FROM: $VW_SMTP_FROM
-      SMTP_USERNAME: $VW_SMTP_USERNAME 
+      SMTP_FROM_NAME: $VW_SMTP_FROM_NAME
+      SMTP_USERNAME: $VW_SMTP_USERNAME
       SMTP_PASSWORD: $VW_SMTP_PASSWORD
     volumes:
-      - ./vw-data/:/data/
+      - ${DATA_PATH:-.}/vw-data:/data/
     ports:
       - 8000:80
 
