@@ -107,7 +107,13 @@ services:
     container_name: vaultwarden
     restart: unless-stopped
     environment:
-      DOMAIN: "$VW_DOMAIN"
+      DOMAIN: $VW_DOMAIN
+      SMTP_HOST: $VW_SMTP_HOST
+      SMTP_PORT: $VW_SMTP_PORT         
+      SMTP_SECURITY: $VW_SMTP_SECURITY                                                                                                                                                                              
+      SMTP_FROM: $VW_SMTP_FROM
+      SMTP_USERNAME: $VW_SMTP_USERNAME 
+      SMTP_PASSWORD: $VW_SMTP_PASSWORD
     volumes:
       - ./vw-data/:/data/
     ports:

@@ -46,3 +46,4 @@ services:
     ports: []
     env_file:
       - /etc/home-server/.env
+    
