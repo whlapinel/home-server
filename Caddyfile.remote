@@ -1,47 +1,52 @@
 lapinel-fam.club {
-    tls {
-        dns route53
-    }
-    root * /var/www
-    file_server
+	tls {
+		dns route53
+	}
+	root * /var/www
+	file_server
 }
 
 *.lapinel-fam.club {
-    tls {
-        dns route53
-    }
+	tls {
+		dns route53
+	}
 
-    @impostor host impostor.lapinel-fam.club
-    handle @impostor {
-        reverse_proxy impostor:1789
-    }
+	@impostor host impostor.lapinel-fam.club
+	handle @impostor {
+		reverse_proxy impostor:1789
+	}
 
-    @pages host pages.lapinel-fam.club
-    handle @pages {
-        reverse_proxy grav:80
-    }
+	@pages host pages.lapinel-fam.club
+	handle @pages {
+		reverse_proxy grav:80
+	}
 
-    @chores host chores.lapinel-fam.club
-    handle @chores {
-        reverse_proxy donetick:2021
-    }
+	@chores host chores.lapinel-fam.club
+	handle @chores {
+		reverse_proxy donetick:2021
+	}
 
-    @tasks host tasks.lapinel-fam.club
-    handle @tasks {
-        reverse_proxy vikunja:3456
-    }
+	@tasks host tasks.lapinel-fam.club
+	handle @tasks {
+		reverse_proxy vikunja:3456
+	}
 
-    @budget host budget.lapinel-fam.club
-    handle @budget {
-        reverse_proxy actual_server:5006
-    }
+	@budget host budget.lapinel-fam.club
+	handle @budget {
+		reverse_proxy actual_server:5006
+	}
 
-    @wg host wg.lapinel-fam.club
-    handle @wg {
-        reverse_proxy host.docker.internal:51821
-    }
+	@wg host wg.lapinel-fam.club
+	handle @wg {
+		reverse_proxy host.docker.internal:51821
+	}
 
-    handle {
-        respond "unknown host" 404
-    }
+	@bw host wg.lapinel-fam.club
+	handle @bw {
+		reverse_proxy vaultwarden:80
+	}
+
+	handle {
+		respond "unknown host" 404
+	}
 }
