@@ -12,6 +12,7 @@ services:
     environment:
       - TZ=America/Los_Angeles
   grav:
+    container_name: grav
     image: getgrav/grav
     ports:
       - "1066:80"
@@ -64,6 +65,7 @@ services:
     env_file:
       - .env
   vikunja:
+    container_name: vikunja
     image: vikunja/vikunja:2.1.0
     ports:
       - 3456:3456
@@ -85,6 +87,7 @@ services:
     env_file:
       - .env
   actual_server:
+    container_name: actual
     image: docker.io/actualbudget/actual-server:latest
     ports:
       # This line makes Actual available at port 5006 of the device you run the server on,
