@@ -51,6 +51,11 @@ lapinel-fam.club {
 		reverse_proxy paperless:8000
 	}
 
+	@synology host synology.lapinel-fam.club
+	handle @synology {
+		reverse_proxy 10.8.0.2:5000
+	}
+
 	handle {
 		respond "unknown host" 404
 	}
