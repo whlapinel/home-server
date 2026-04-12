@@ -41,4 +41,8 @@ services:
       - /root/.wg-easy:/etc/wireguard
     env_file:
       - /etc/home-server/.env
-    
+
+  vaultwarden:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
