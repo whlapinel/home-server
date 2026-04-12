@@ -18,6 +18,11 @@ aws ssm get-parameter \
 echo "Ensuring data volume is mounted..."
 mountpoint -q /opt/home-server-data || mount LABEL=home-server-data /opt/home-server-data
 
+echo "Ensuring app data directories exist with correct permissions..."
+# Vikunja runs as uid=1000
+mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db
+chown -R 1000:0 /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db
+
 echo "Pulling latest repo changes..."
 git pull --ff-only
 
