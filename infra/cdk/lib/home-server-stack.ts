@@ -111,7 +111,9 @@ export class HomeServerStack extends cdk.Stack {
       'echo "[bootstrap] Ensuring app data directories exist with correct permissions"',
       // Vikunja runs as uid=1000; directories must be pre-created with correct ownership
       // or Docker will create them as root and the container will fail to write
-      'mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db',
+      'mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db /opt/home-server-data/grav-site /opt/home-server-data/donetick-data /opt/home-server-data/donetick-config /opt/home-server-data/actual-data /opt/home-server-data/vw-data',
+      // Vikunja runs as uid=1000; directories must be pre-created with correct ownership
+      // or Docker will create them as root and the container will fail to write
       'chown -R 1000:0 /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db',
       'echo "[bootstrap] Fetching /home-server/.env from SSM Parameter Store"',
       `aws ssm get-parameter --region ${cdk.Stack.of(this).region} --name "/home-server/.env" --with-decryption --query 'Parameter.Value' --output text > /etc/home-server/.env`,
