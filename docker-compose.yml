@@ -123,6 +123,32 @@ services:
     ports:
       - 8000:80
 
+  paperless-broker:
+    image: docker.io/library/redis:8
+    container_name: paperless-broker
+    restart: unless-stopped
+    volumes:
+      - ${DATA_PATH:-.}/paperless/redis:/data
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    restart: unless-stopped
+    depends_on:
+      - paperless-broker
+    ports:
+      - "8010:8000"
+    volumes:
+      - ${DATA_PATH:-.}/paperless/data:/usr/src/paperless/data
+      - ${DATA_PATH:-.}/paperless/media:/usr/src/paperless/media
+      - ${DATA_PATH:-.}/paperless/export:/usr/src/paperless/export
+      - ${DATA_PATH:-.}/paperless/consume:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://paperless-broker:6379
+      PAPERLESS_DBENGINE: sqlite
+      PAPERLESS_URL: ${PAPERLESS_URL:-}
+    env_file:
+      - .env
+
 volumes:
   caddy_data:
   caddy_config:

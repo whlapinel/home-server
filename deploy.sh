@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Run on the EC2 instance to pull latest config, binary, and redeploy.
 # Must be run from /opt/home-server.
+# First-run setup (volume mount, directories, restic, cron) is handled by CDK bootstrap.
 
 BUCKET="lapinel-home-server-backup"
 REGION="us-east-2"
@@ -15,14 +16,6 @@ aws ssm get-parameter \
   --query 'Parameter.Value' \
   --output text > /etc/home-server/.env
 
-echo "Ensuring data volume is mounted..."
-mountpoint -q /opt/home-server-data || mount LABEL=home-server-data /opt/home-server-data
-
-echo "Ensuring app data directories exist with correct permissions..."
-# Vikunja runs as uid=1000
-mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db /opt/home-server-data/grav-site /opt/home-server-data/donetick-data /opt/home-server-data/donetick-config /opt/home-server-data/actual-data /opt/home-server-data/vw-data
-chown -R 1000:0 /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db
-
 echo "Pulling latest repo changes..."
 git pull --ff-only
 
@@ -32,14 +25,5 @@ chmod +x impostor/impostor
 
 echo "Redeploying stack..."
 docker compose -f docker-compose.yml -f docker-compose.remote.yml --env-file /etc/home-server/.env up -d --build
-
-echo "Initializing restic repository if needed..."
-set -a; source /etc/home-server/.env; set +a
-restic snapshots >/dev/null 2>&1 || restic init
-
-echo "Ensuring daily backup cron job is configured..."
-command -v crond >/dev/null 2>&1 || dnf install -y cronie
-systemctl enable --now crond
-echo "0 2 * * * root /opt/home-server/backup.sh >> /var/log/home-server-backup.log 2>&1" > /etc/cron.d/home-server-backup
 
 echo "Deploy complete."

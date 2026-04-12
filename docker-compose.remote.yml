@@ -46,4 +46,13 @@ services:
     ports: []
     env_file:
       - /etc/home-server/.env
-    
+
+  paperless-broker:
+    env_file:
+      - /etc/home-server/.env
+
+  paperless:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+
