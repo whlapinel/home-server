@@ -41,7 +41,7 @@ lapinel-fam.club {
 		reverse_proxy host.docker.internal:51821
 	}
 
-	@bw host wg.lapinel-fam.club
+	@bw host bw.lapinel-fam.club
 	handle @bw {
 		reverse_proxy vaultwarden:80
 	}
