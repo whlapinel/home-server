@@ -56,7 +56,7 @@ lapinel-fam.club {
 		reverse_proxy 10.8.0.2:5000
 	}
 
-	@todo host synology.lapinel-fam.club
+	@todo host todo.lapinel-fam.club
 	handle @todo {
 		reverse_proxy todo:3000
 	}
