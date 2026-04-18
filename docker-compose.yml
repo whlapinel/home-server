@@ -1,4 +1,12 @@
 services:
+  todo:
+    image: whlapinel/todo:latest
+    container_name: todo
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${DATA_PATH:-.}/todo-data:/data
+    restart: unless-stopped
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
     container_name: homeassistant

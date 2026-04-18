@@ -111,7 +111,7 @@ export class HomeServerStack extends cdk.Stack {
       'echo "[bootstrap] Ensuring app data directories exist with correct permissions"',
       // Vikunja runs as uid=1000; directories must be pre-created with correct ownership
       // or Docker will create them as root and the container will fail to write
-      'mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db /opt/home-server-data/grav-site /opt/home-server-data/donetick-data /opt/home-server-data/donetick-config /opt/home-server-data/actual-data /opt/home-server-data/vw-data /opt/home-server-data/paperless/data /opt/home-server-data/paperless/media /opt/home-server-data/paperless/export /opt/home-server-data/paperless/consume /opt/home-server-data/paperless/redis',
+      'mkdir -p /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db /opt/home-server-data/grav-site /opt/home-server-data/donetick-data /opt/home-server-data/donetick-config /opt/home-server-data/actual-data /opt/home-server-data/vw-data /opt/home-server-data/paperless/data /opt/home-server-data/paperless/media /opt/home-server-data/paperless/export /opt/home-server-data/paperless/consume /opt/home-server-data/paperless/redis /opt/home-server-data/todo-data',
       // Vikunja runs as uid=1000; directories must be pre-created with correct ownership
       // or Docker will create them as root and the container will fail to write
       'chown -R 1000:0 /opt/home-server-data/vikunja-files /opt/home-server-data/vikunja-db',

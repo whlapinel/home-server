@@ -11,6 +11,11 @@ services:
       - /etc/home-server/.env
 
   # Remove host port publishes; reachable via Caddy inside VPN
+  todo:
+    ports: []
+    env_file:
+      - /etc/home-server/.env
+
   grav:
     ports: []
     env_file:
