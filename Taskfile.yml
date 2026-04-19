@@ -1,0 +1,95 @@
+version: "3"
+
+dotenv: [".env.dev"]
+
+vars:
+  SNAPSHOT: latest
+  SERVICE: ""
+
+tasks:
+  default:
+    desc: List available tasks
+    cmd: task --list
+    silent: true
+
+  # ── AWS auth ────────────────────────────────────────────────────────────────
+
+  login:
+    desc: AWS SSO login
+    cmd: aws sso login --profile $AWS_PROFILE
+
+  # ── CDK / infra ─────────────────────────────────────────────────────────────
+
+  cdk:deploy:
+    desc: Deploy (or update) the EC2 stack via CDK
+    dir: infra/cdk
+    cmd: npm run deploy
+
+  cdk:synth:
+    desc: Synthesize and print the CloudFormation template
+    dir: infra/cdk
+    cmd: npm run synth
+
+  cdk:diff:
+    desc: Show pending CloudFormation changes
+    dir: infra/cdk
+    cmd: npx cdk diff
+
+  # ── Secrets ─────────────────────────────────────────────────────────────────
+
+  secrets:push:
+    desc: Upload .env.remote to SSM Parameter Store
+    cmd: ./update-remote-param.sh
+
+  # ── Local dev ────────────────────────────────────────────────────────────────
+
+  up:
+    desc: Start local Docker Compose stack
+    cmd: docker compose up -d
+
+  down:
+    desc: Stop local Docker Compose stack
+    cmd: docker compose down
+
+  logs:
+    desc: Tail logs for a service  (e.g. task logs SERVICE=caddy)
+    cmd: docker compose logs -f {{.SERVICE}}
+
+  # ── Remote EC2 ───────────────────────────────────────────────────────────────
+
+  ec2:session:
+    desc: Open an SSM shell session to the EC2 instance
+    cmd: aws ssm start-session --profile $AWS_PROFILE --target $INSTANCE_ID
+
+  ec2:bootstrap-logs:
+    desc: Stream the EC2 bootstrap log via SSM (reads /var/log/home-server-bootstrap.log)
+    cmd: |
+      aws ssm start-session \
+        --profile $AWS_PROFILE \
+        --target $INSTANCE_ID \
+        --document-name AWS-StartInteractiveCommand \
+        --parameters '{"command":["tail -f /var/log/home-server-bootstrap.log"]}'
+
+  ec2:wg-ui:
+    desc: Port-forward WireGuard UI to localhost:51821
+    cmd: |
+      aws ssm start-session \
+        --profile $AWS_PROFILE \
+        --target $INSTANCE_ID \
+        --document-name AWS-StartPortForwardingSession \
+        --parameters '{"portNumber":["51821"],"localPortNumber":["51821"]}' \
+        --region us-east-2
+
+  # ── Backup / restore ─────────────────────────────────────────────────────────
+
+  backup:
+    desc: Run a restic backup
+    cmd: ./backup.sh
+
+  restore:
+    desc: Full restore from restic snapshot  (e.g. task restore SNAPSHOT=latest)
+    cmd: ./restore.sh {{.SNAPSHOT}}
+
+  restore:actual:
+    desc: Restore only Actual Budget data  (e.g. task restore:actual SNAPSHOT=latest)
+    cmd: ./restore-actual.sh {{.SNAPSHOT}}
